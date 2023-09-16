@@ -1,0 +1,67 @@
+<div class="editor-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <form [formGroup]="post" (ngSubmit)="submit()">
+          <fieldset class="form-group">
+            <input
+              formControlName="title"
+              name="title"
+              class="form-control form-control-lg"
+              type="text"
+              placeholder="Post Title"
+            />
+            <ng-container *ngIf="post.invalid && post.touched">
+              <p class="error-messages" *ngIf="post.controls.title.hasError('required')"> title is required!</p>
+            </ng-container>
+          </fieldset>
+          <fieldset class="form-group">
+            <textarea
+              formControlName="description"
+              name="description"
+              class="form-control"
+              rows="3"
+              placeholder="Description"
+            ></textarea>
+          </fieldset>
+          <fieldset class="form-group">
+            <textarea
+              [formControl]="postBody"
+              name="body"
+              class="form-control"
+              rows="8"
+              placeholder="Post body"
+            ></textarea>
+            <ng-container *ngIf="post.invalid && post.touched">
+              <p class="error-messages" *ngIf="post.controls.body.hasError('required')"> title is required!</p>
+              <p class="error-messages" *ngIf="post.controls.body.hasError('minlength')"> title need 10 words</p>
+            </ng-container>
+          </fieldset>
+          <fieldset class="form-group">
+            <input
+            #tag
+            (keyup.Enter)="addTag(tag.value);tag.value= ''"
+            (keydown.Enter)="$event.preventDefault()"
+            class="form-control"
+            type="text"
+            placeholder="Enter tags" />
+            <div class="tag-list" >
+              <ng-container *ngFor="let tag of post.controls.tags.controls;let i = index">
+                <span class="label label-pill label-default">
+                  <i class="ion-close-round" (click)="removeTag(i)"></i> {{ tag.value }}</span
+                >
+              </ng-container>
+            </div>
+          </fieldset>
+          <button
+          type="submit"
+          class="btn btn-lg btn-primary pull-xs-right"
+          [disabled]="post.invalid"
+          >
+            Create Post
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
